@@ -1,0 +1,24 @@
+diff --git a/simpleble/CMakeLists.txt b/simpleble/CMakeLists.txt
+index de5c994..af21e8c 100644
+--- a/simpleble/CMakeLists.txt
++++ b/simpleble/CMakeLists.txt
+@@ -80,8 +80,8 @@ set_target_properties(simpleble PROPERTIES
+     MINSIZEREL_POSTFIX "-minsizerel"
+     DEBUG_POSTFIX "-debug")
+ 
+-if(MSVC)
+-    # Avoid <experimental/coroutine> being triggered by winrt/base.h, which fails for MSVC 19.51+.
++if(MSVC OR CMAKE_SYSTEM_NAME STREQUAL "Windows")
++    # WinRT headers require C++20 coroutines (MSVC and MinGW/GCC).
+     set_target_properties(simpleble PROPERTIES CXX_STANDARD 20)
+ endif()
+ 
+@@ -298,6 +298,8 @@ elseif(SIMPLEBLE_BACKEND_WINDOWS)
+     message(STATUS "Windows Host Detected")
+ 
+     target_link_libraries(simpleble PUBLIC setupapi)
++    # WinRT runtime APIs (RoInitialize, RoGetActivationFactory, ...) live in runtimeobject.dll.
++    target_link_libraries(simpleble PUBLIC runtimeobject)
+ 
+     set(WINVERSION_CODE 0x0A00) # Selected Windows 10 based on https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt
+ 
