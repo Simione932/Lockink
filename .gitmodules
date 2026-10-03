@@ -1,3 +1,5 @@
-[submodule "SimpleBLE"]
-	path = SimpleBLE
-	url = https://github.com/SimpleBLE/SimpleBLE
+[submodule "simpleble"]
+	
+	path = simpleble
+	
+	url = https://github.com/simpleble/simpleble.git
